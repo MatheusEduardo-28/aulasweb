@@ -2,7 +2,7 @@
 const sprites = new Image();
 sprites.src = './sprites.png';
 const som_punch = new Audio();
-som_punch.src = './som/punch.wav'
+som_punch.src = './punch.wav'
 
 const canvas = document.querySelector('#game-canvas');
 const contexto = canvas.getContext('2d');
