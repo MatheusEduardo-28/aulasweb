@@ -22,13 +22,13 @@ const flappyBird = {
     },
 
     desenha(){
-    contexto.drawImage(
-            sprites,
-            flappyBird.spriteX, flappyBird.spriteY,
-            flappyBird.largura, flappyBird.altura,
-            flappyBird.x, flappyBird.y,
-            flappyBird.largura, flappyBird.altura,
-        );
+        contexto.drawImage(
+                sprites,
+                flappyBird.spriteX, flappyBird.spriteY,
+                flappyBird.largura, flappyBird.altura,
+                flappyBird.x, flappyBird.y,
+                flappyBird.largura, flappyBird.altura,
+            );
     },
 
     movimentos: [
@@ -112,7 +112,7 @@ const chao2 ={
                 chao2.largura, chao2.altura,
             );
         },
-        atualiza2(){
+        atualiza(){
             chao2.x = chao2.x - 1;
             chao2.x = chao2.x % (chao2.largura/2);
         }
@@ -124,7 +124,7 @@ const PlanoDeFundo ={
     largura:300,
     altura: 206,
     x: 0,
-    y: canvas.height - 227,
+    y: canvas.height - 206,
         desenha(){
             contexto.drawImage(
                 sprites,
@@ -133,8 +133,27 @@ const PlanoDeFundo ={
                 PlanoDeFundo.x, PlanoDeFundo.y,
                 PlanoDeFundo.largura, PlanoDeFundo.altura,
             );
+            contexto.drawImage(
+                sprites,
+                PlanoDeFundo.spriteX, PlanoDeFundo.spriteY,
+                PlanoDeFundo.largura, PlanoDeFundo.altura,
+                PlanoDeFundo.x + PlanoDeFundo.largura, PlanoDeFundo.y,
+                PlanoDeFundo.largura, PlanoDeFundo.altura,
+            )
+            contexto.drawImage(
+                sprites,
+                PlanoDeFundo.spriteX, PlanoDeFundo.spriteY,
+                PlanoDeFundo.largura, PlanoDeFundo.altura,
+                PlanoDeFundo.x + PlanoDeFundo.largura * 2, PlanoDeFundo.y,
+                PlanoDeFundo.largura, PlanoDeFundo.altura,
+            )
+        },
+        atualiza(){
+            PlanoDeFundo.x = PlanoDeFundo.x - 1;
+            if(PlanoDeFundo.x == -PlanoDeFundo.largura){
+                PlanoDeFundo.x = 0
+            }
         }
-
 }
 
 const PlanoDeFundo2 ={
@@ -143,7 +162,7 @@ const PlanoDeFundo2 ={
     largura:300,
     altura: 206,
     x: 50,
-    y: canvas.height - 227,
+    y: canvas.height - 206,
         desenha(){
             contexto.drawImage(
                 sprites,
@@ -152,8 +171,29 @@ const PlanoDeFundo2 ={
                 PlanoDeFundo2.x, PlanoDeFundo2.y,
                 PlanoDeFundo2.largura, PlanoDeFundo2.altura,
             );
+            contexto.drawImage(
+                sprites,
+                PlanoDeFundo2.spriteX, PlanoDeFundo2.spriteY,
+                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
+                PlanoDeFundo2.x + PlanoDeFundo2.largura, PlanoDeFundo2.y,
+                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
+            );
+            contexto.drawImage(
+                sprites,
+                PlanoDeFundo2.spriteX, PlanoDeFundo2.spriteY,
+                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
+                PlanoDeFundo2.x + PlanoDeFundo2.largura * 2, PlanoDeFundo2.y,
+                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
+            );
+        },
+        atualiza(){
+            PlanoDeFundo2.x = PlanoDeFundo2.x - 1;
+            if(PlanoDeFundo2.x == -PlanoDeFundo.largura){
+                PlanoDeFundo2.x = 0
+            }
         }
-}
+    }
+
 const telainicial ={
     spriteX: 130,
     spriteY: 0,
@@ -172,7 +212,7 @@ const telainicial ={
         }
 }
 
-const ceu={
+const ceu = {
     desenha(){
         contexto.fillStyle = '#70c5ce';
         contexto.fillRect(0,0, canvas.clientWidth, canvas.height)
@@ -185,7 +225,10 @@ const TelaInicio ={
         PlanoDeFundo2.desenha();
         chao.desenha();
         chao2.desenha();
+        chao.atualiza();
+        chao2.atualiza();
         flappyBird.desenha();
+        flappyBird.atualizaframe();
         telainicial.desenha();
     },
     click(){
@@ -198,11 +241,13 @@ const TelaJogo ={
     desenha(){
         ceu.desenha();
         PlanoDeFundo.desenha();
+        PlanoDeFundo.atualiza();
         PlanoDeFundo2.desenha();
+        PlanoDeFundo2.atualiza();
         chao.desenha();
         chao2.desenha();
         chao.atualiza();
-        chao2.atualiza2();
+        chao2.atualiza();
         flappyBird.desenha();
         flappyBird.atualiza();
     },
