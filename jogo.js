@@ -2,7 +2,7 @@
 const sprites = new Image();
 sprites.src = './sprites.png';
 const som_punch = new Audio();
-som_punch.src = './punch.wav'
+som_punch.src = './som.wav'
 
 let animation_frame = 0;
 
@@ -42,7 +42,7 @@ const flappyBird = {
     velocidade:0,
     
     atualiza(){
-        if(fazColisao(flappyBird, chao, chao2)){
+        if(fazColisao(flappyBird, chao)){
             som_punch.play();
             telaAtiva = TelaInicio;
             return;
@@ -76,19 +76,26 @@ function fazColisao(){
 
 const chao ={
     spriteX: 0,
-    spriteY: 609,
-    largura: 225,
-    altura: 110,
+    spriteY: 613,
+    largura: 223,
+    altura: 109,
     x: 0,
     y: canvas.height - 110,
         desenha(){
-        contexto.drawImage(
+            contexto.drawImage(
                 sprites,
                 chao.spriteX, chao.spriteY,
                 chao.largura, chao.altura,
-                chao.x + chao.largura -1, chao.y,
+                chao.x, chao.y,
                 chao.largura, chao.altura,
             );
+            contexto.drawImage(
+                sprites,
+                chao.spriteX, chao.spriteY,
+                chao.largura, chao.altura,
+                chao.x + chao.largura, chao.y,
+                chao.largura, chao.altura,
+                );
         },
         atualiza(){
             chao.x = chao.x - 1;
@@ -96,32 +103,10 @@ const chao ={
         }
 }
 
-const chao2 ={
-    spriteX: 0,
-    spriteY: 609,
-    largura: 225,
-    altura: 110,
-    x: 0,
-    y: canvas.height - 110,
-        desenha(){
-            contexto.drawImage(
-                sprites,
-                chao2.spriteX, chao2.spriteY,
-                chao2.largura, chao2.altura,
-                chao2.x, chao2.y,
-                chao2.largura, chao2.altura,
-            );
-        },
-        atualiza(){
-            chao2.x = chao2.x - 1;
-            chao2.x = chao2.x % (chao2.largura/2);
-        }
-}
-
 const PlanoDeFundo ={
-    spriteX: 390,
+    spriteX: 390.5,
     spriteY: 0,
-    largura:300,
+    largura:275.5,
     altura: 206,
     x: 0,
     y: canvas.height - 206,
@@ -139,60 +124,22 @@ const PlanoDeFundo ={
                 PlanoDeFundo.largura, PlanoDeFundo.altura,
                 PlanoDeFundo.x + PlanoDeFundo.largura, PlanoDeFundo.y,
                 PlanoDeFundo.largura, PlanoDeFundo.altura,
-            )
+            );
             contexto.drawImage(
                 sprites,
                 PlanoDeFundo.spriteX, PlanoDeFundo.spriteY,
                 PlanoDeFundo.largura, PlanoDeFundo.altura,
                 PlanoDeFundo.x + PlanoDeFundo.largura * 2, PlanoDeFundo.y,
                 PlanoDeFundo.largura, PlanoDeFundo.altura,
-            )
+            );
         },
         atualiza(){
-            PlanoDeFundo.x = PlanoDeFundo.x - 1;
+            PlanoDeFundo.x = PlanoDeFundo.x - 0.4;
             if(PlanoDeFundo.x == -PlanoDeFundo.largura){
                 PlanoDeFundo.x = 0
             }
         }
-}
-
-const PlanoDeFundo2 ={
-    spriteX: 390,
-    spriteY: 0,
-    largura:300,
-    altura: 206,
-    x: 50,
-    y: canvas.height - 206,
-        desenha(){
-            contexto.drawImage(
-                sprites,
-                PlanoDeFundo2.spriteX, PlanoDeFundo2.spriteY,
-                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
-                PlanoDeFundo2.x, PlanoDeFundo2.y,
-                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
-            );
-            contexto.drawImage(
-                sprites,
-                PlanoDeFundo2.spriteX, PlanoDeFundo2.spriteY,
-                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
-                PlanoDeFundo2.x + PlanoDeFundo2.largura, PlanoDeFundo2.y,
-                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
-            );
-            contexto.drawImage(
-                sprites,
-                PlanoDeFundo2.spriteX, PlanoDeFundo2.spriteY,
-                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
-                PlanoDeFundo2.x + PlanoDeFundo2.largura * 2, PlanoDeFundo2.y,
-                PlanoDeFundo2.largura, PlanoDeFundo2.altura,
-            );
-        },
-        atualiza(){
-            PlanoDeFundo2.x = PlanoDeFundo2.x - 1;
-            if(PlanoDeFundo2.x == -PlanoDeFundo.largura){
-                PlanoDeFundo2.x = 0
-            }
-        }
-    }
+    }//
 
 const telainicial ={
     spriteX: 130,
@@ -222,13 +169,8 @@ const TelaInicio ={
     desenha(){
         ceu.desenha();
         PlanoDeFundo.desenha();
-        PlanoDeFundo2.desenha();
         chao.desenha();
-        chao2.desenha();
-        chao.atualiza();
-        chao2.atualiza();
         flappyBird.desenha();
-        flappyBird.atualizaframe();
         telainicial.desenha();
     },
     click(){
@@ -242,12 +184,8 @@ const TelaJogo ={
         ceu.desenha();
         PlanoDeFundo.desenha();
         PlanoDeFundo.atualiza();
-        PlanoDeFundo2.desenha();
-        PlanoDeFundo2.atualiza();
         chao.desenha();
-        chao2.desenha();
         chao.atualiza();
-        chao2.atualiza();
         flappyBird.desenha();
         flappyBird.atualiza();
     },
@@ -260,7 +198,7 @@ var telaAtiva = TelaInicio
 function loop(){
     telaAtiva.desenha();
     requestAnimationFrame(loop);
-    animetion_frame = animation_frame + 1;
+    animation_frame = animation_frame + 1;
 }
 function mudaTelaAtiva(){
     TelaInicio.click();
