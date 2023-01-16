@@ -91,12 +91,13 @@ const canos = {
     },
     
     pares: [],
+    espacamentoEntreCanos: 120,
 
     desenha() {
         const espacamentoEntreCanos = 80;
         for(i = 0; i < canos.pares.length; i ++){
-            canos.ceu.x = canos.pares.x;
-            
+            canos.ceu.x = canos.pares[i].x;
+            canos.ceu.x = canos.pares[i].y;
         }
         contexto.drawImage(
             sprites,
@@ -118,16 +119,46 @@ const canos = {
     },
     atualiza(){
         canos.ceu.x = canos.ceu.x - 2;
-    }
-},
+        const passou100frames = (animation_frame % 100 == 0);
+        if (passou100frames) {
+            const novoPar = {
+                x: canvas.Width,
+                y: - 150 * (Math.random() + 1),
+            }
+            canos.pares.push(novoPar);
+        }
+        for(i = 0; i < canos.pares.length; i ++){
+            const par = canos.pares[i];
+            this.pares.x = par.x - 2;
 
-const passou100frames = (animation_frame % 100 == 0);
-if (passou100frames) {
-    const novoPar = {
-        x: canvas.clientWidth,
-        y: - 150,
+            if(par.x  + canos.largura <= 0){
+                canos.pares.shift();
+            }
+
+            if(fazColisaoObstaculo(par)){
+                som.play();
+                telaAtiva = TelaInicio;
+                return;
+            }
+        }
     }
-    canos.pares.push(novoPar);
+}
+
+function fazColisaoObstaculo(par){
+    if(flappyBird.x >= par.x){
+        const alturaCabecaFlappy = flappyBird.y;
+        const alturapeFlappy = flappyBird.y + flappyBird.altura;
+        const bocaCanoCeuY = par.y + canos.altura;
+        const bocaCanoChaoY = par + canos.altura + canos.espacamentoEntreCanos;
+        if(alturaCabecaFlappy <= bocaCanoCeuY){
+            return true
+        }
+
+        if(alturapeFlappy >= bocaCanoChaoY){
+            return true;
+        }
+    }
+    return false;
 }
 
 const chao = {
@@ -195,7 +226,7 @@ const PlanoDeFundo = {
             PlanoDeFundo.x = 0
         }
     }
-}//
+}
 
 const telainicial = {
     spriteX: 130,
