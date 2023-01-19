@@ -95,48 +95,49 @@ const canos = {
 
     desenha() {
         const espacamentoEntreCanos = 80;
-        for(i = 0; i < canos.pares.length; i ++){
+        for(i = 0; i < canos.pares.length; i++){
             canos.ceu.x = canos.pares[i].x;
-            canos.ceu.x = canos.pares[i].y;
-        }
-        contexto.drawImage(
-            sprites,
-            canos.ceu.spriteX, canos.ceu.spriteY,
-            canos.largura, canos.altura,
-            canos.ceu.x, canos.ceu.y,
-            canos.largura, canos.altura,
-        )
+            canos.ceu.y = canos.pares[i].y;
 
-        const canoChaoX = canos.ceu.x;
-        const canoChaoY = canos.altura + espacamentoEntreCanos + canos.ceu.y;
-        contexto.drawImage(
-            sprites,
-            canos.chao.spriteX, canos.chao.spriteY,
-            canos.largura, canos.altura,
-            canoChaoX, canoChaoY,
-            canos.largura, canos.altura
-        )
+            contexto.drawImage(
+                sprites,
+                canos.ceu.spriteX, canos.ceu.spriteY,
+                canos.largura, canos.altura,
+                canos.ceu.x, canos.ceu.y,
+                canos.largura, canos.altura,
+                )
+                
+            const canoChaoX = canos.ceu.x;
+            const canoChaoY = canos.altura + espacamentoEntreCanos + canos.ceu.y;
+                contexto.drawImage(
+                    sprites,
+                    canos.chao.spriteX, canos.chao.spriteY,
+                    canos.largura, canos.altura,
+                    canoChaoX, canoChaoY,
+                    canos.largura, canos.altura
+                    )
+        }
     },
     atualiza(){
         canos.ceu.x = canos.ceu.x - 2;
-        const passou100frames = (animation_frame % 100 == 0);
+        const passou100frames = (animation_frame % 100) === 0;
         if (passou100frames) {
             const novoPar = {
-                x: canvas.Width,
-                y: - 150 * (Math.random() + 1),
+                x: canvas.width,
+                y: -150 * (Math.random() + 1),
             }
             canos.pares.push(novoPar);
         }
         for(i = 0; i < canos.pares.length; i ++){
             const par = canos.pares[i];
-            this.pares.x = par.x - 2;
+            canos.pares[i].x = par.x - 2;
 
             if(par.x  + canos.largura <= 0){
                 canos.pares.shift();
             }
 
             if(fazColisaoObstaculo(par)){
-                som.play();
+                som_punch.play();
                 telaAtiva = TelaInicio;
                 return;
             }
