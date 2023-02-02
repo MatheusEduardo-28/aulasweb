@@ -168,6 +168,7 @@ function criaCanos(){
         pares: [],
         espacamentoEntreCanos: 80,
         desenha(){
+            console.log("Pares: " + canos.pares.length)
             const espacamentoEntreCanos = 80;
             for (i=0;i<canos.pares.length;i++){
                 canos.ceu.x = canos.pares[i].x;
@@ -287,10 +288,10 @@ const TelaJogo ={
     desenha(){
         ceu.desenha();
         jogo.PlanoDeFundo.desenha();
-        jogo.flappyBird.desenha();
-        jogo.flappyBird.atualiza();
         jogo.canos.desenha();
         jogo.canos.atualiza();
+        jogo.flappyBird.desenha();
+        jogo.flappyBird.atualiza();
         jogo.chao.desenha();
         jogo.chao.atualiza();
         jogo.PlanoDeFundo.atualiza();
@@ -318,8 +319,7 @@ function loop(){
     animation_frame = animation_frame + 1
 }
 function mudaTelaAtiva(){
-    TelaInicio.click();
-    TelaJogo.click();
+    telaAtiva.click();
 }
 function fazColisao(){
     if (jogo.flappyBird.y < jogo.chao.y-30){
